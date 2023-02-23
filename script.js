@@ -4,7 +4,6 @@ const itemList = document.getElementById('item-list');
 const clearButton = document.getElementById('clear');
 const itemFilter = document.getElementById('filter');
 
-
 function addItem(e) {
   e.preventDefault();
 
@@ -50,7 +49,7 @@ function removeItem(e) {
     if (confirm('Are you sure you want to delete this item?')) {
       e.target.parentElement.parentElement.remove();
 
-      checkUI()
+      checkUI();
     }
   }
 }
@@ -59,12 +58,27 @@ function clearItems() {
   while (itemList.firstChild) {
     itemList.removeChild(itemList.firstChild);
   }
-  checkUI()
+  checkUI();
+}
+
+function filterItems(e) {
+  const items = document.querySelectorAll('li');
+  const text = e.target.value.toLowerCase();
+  
+  items.forEach(item => {
+    const itemName = item.firstChild.textContent.toLowerCase();
+      
+    if (itemName.indexOf(text) != -1) {
+      item.style.display = 'flex'
+    } else {
+      item.style.display = 'none'
+    }
+  })
 }
 
 function checkUI() {
   const items = document.querySelectorAll('li');
-  console.log(items);
+
   if (items.length === 0) {
     itemFilter.style.display = 'none';
     clearButton.style.display = 'none';
@@ -78,5 +92,6 @@ function checkUI() {
 itemForm.addEventListener('submit', addItem);
 itemList.addEventListener('click', removeItem);
 clearButton.addEventListener('click', clearItems);
+itemFilter.addEventListener('input', filterItems);
 
 checkUI();
